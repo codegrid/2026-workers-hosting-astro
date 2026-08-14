@@ -1,8 +1,13 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json", // このファイルのスキーマを宣言
 	"name": "demo-astro-workers", // Workersアプリケーションの名前（任意）
+	"main": "@astrojs/cloudflare/entrypoints/server", // アダプターが提供するエントリーポイント
 	"compatibility_date": "2026-08-13", // workerdランタイムに関する指定
+	"compatibility_flags": [
+		"nodejs_compat", // Node.js互換のAPIを有効にする
+	],
 	"assets": {
 		"directory": "./dist", // 静的に配信するディレクトリ
+		"binding": "ASSETS", // レンダリング時にdist内のファイルを参照できるようにする
 	},
 }
