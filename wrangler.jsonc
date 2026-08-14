@@ -1,0 +1,8 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json", // このファイルのスキーマを宣言
+	"name": "demo-astro-workers", // Workersアプリケーションの名前（任意）
+	"compatibility_date": "2026-08-13", // workerdランタイムに関する指定
+	"assets": {
+		"directory": "./dist", // 静的に配信するディレクトリ
+	},
+}
