@@ -1,46 +1,63 @@
-# Astro Starter Kit: Basics
+# AstroのサイトをWorkersにデプロイする
 
-```sh
-npm create astro@latest -- --template basics
+CodeGridの連載「Cloudflare Workersで作るWebサイトのホスティング」第2回のサンプルです。Astroで作ったサイトをCloudflare Workersにデプロイし、SSG・SSRの両方を動かすところまでを扱います。
+
+記事の手順を1ステップずつコミットに分けていますので、`git log`を追いながら、どのファイルがどの段階で変わったのかを確認できます。
+
+## コミットの流れ
+
+| コミット | 内容 | 記事の対応箇所 |
+| :--- | :--- | :--- |
+| `Initial commit from Astro` | `npm create astro@latest`（basicsテンプレート） | Astroの準備 |
+| Wranglerを追加して… | wranglerの導入と、静的アセットを配信する`wrangler.jsonc` | SSGの場合 |
+| Cloudflareアダプターを追加して… | `astro add cloudflare`と、`main`・`nodejs_compat`・`binding`の追記 | SSRを使う場合 |
+| オンデマンドレンダリングの… | `prerender = false`を指定した`ssr.astro` | SSRなページを追加する |
+| 404ページを追加して… | `not_found_handling`とビルド時に出力される404ページ | 運用時のポイント |
+
+## 動かし方
+
+依存パッケージをインストールします。
+
+```
+npm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Astroの開発サーバーで確認する場合は次のとおりです。ただし、この方法ではWorkersのランタイム（workerd）は使われません。
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```
+npm run dev
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+workerd上での挙動を確認したい場合は、ビルドしてからWranglerの開発サーバーを起動します。`Astro.request.cf`の値が取得できるのはこちらです。
 
-## 🧞 Commands
+```
+npm run build
+npx wrangler dev
+```
 
-All commands are run from the root of the project, from a terminal:
+`/`は静的なページ、`/ssr`はリクエストのたびにレンダリングされるページです。リロードするたびに表示時刻が変わることを確認してみてください。存在しないパス（`/no-such-page`など）にアクセスすると、ビルド時に生成された静的な404ページが返されます。
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## デプロイ
 
-## 👀 Want to learn more?
+Cloudflareアカウントにログインした状態で、ビルドしてからデプロイします。
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```
+npm run build
+npx wrangler deploy
+```
+
+いきなり本番に反映せず、プレビュー用のURLで確認したい場合は次のようにします。実行後に出力される`Version Preview URL:`のURLでプレビューできます。
+
+```
+npx wrangler versions upload
+```
+
+なお、`wrangler.jsonc`の`name`は`demo-astro-workers`にしてありますので、自分のアカウントにデプロイする際は適宜変更してください。
+
+## 補足
+
+`worker-configuration.d.ts`は自動生成されるファイルのため、リポジトリには含めていません。型が必要な場合は次のコマンドで生成できます。
+
+```
+npm run generate-types
+```
