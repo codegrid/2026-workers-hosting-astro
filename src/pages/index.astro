@@ -8,4 +8,26 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout>
 	<Welcome />
+	<nav>
+		<a href="/ssr">オンデマンドレンダリングのページへ</a>
+	</nav>
 </Layout>
+
+<style>
+	nav {
+		position: fixed;
+		top: 16px;
+		right: 16px;
+		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+		font-size: 14px;
+	}
+
+	nav a {
+		padding: 10px 12px;
+		color: #111827;
+		background: white;
+		border-radius: 8px;
+		text-decoration: none;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	}
+</style>

@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// このページだけオンデマンドレンダリング（SSR）にする
+export const prerender = false;
+
+const renderedAt = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+const cf = Astro.request.cf;
+---
+
+<Layout>
+	<main>
+		<h1>オンデマンドレンダリングのページ</h1>
+		<p>
+			このページはリクエストのたびにWorkers上でレンダリングされます。リロードするたびに、下の時刻が変わります。
+		</p>
+		<dl>
+			<dt>レンダリング時刻</dt>
+			<dd>{renderedAt}</dd>
+			<dt>リクエストを受けたデータセンター</dt>
+			<dd>{cf?.colo ?? '（ローカルでは取得できません）'}</dd>
+			<dt>リクエスト元の国</dt>
+			<dd>{cf?.country ?? '（ローカルでは取得できません）'}</dd>
+		</dl>
+		<a href="/">トップページへ戻る</a>
+	</main>
+</Layout>
+
+<style>
+	main {
+		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+		max-width: 40em;
+		margin: 0 auto;
+		padding: 16px;
+		line-height: 1.7;
+	}
+
+	dl {
+		display: grid;
+		grid-template-columns: max-content 1fr;
+		gap: 4px 16px;
+		padding: 16px;
+		background: #f3f4f6;
+		border-radius: 8px;
+	}
+
+	dt {
+		font-weight: bold;
+	}
+
+	dd {
+		margin: 0;
+	}
+</style>
