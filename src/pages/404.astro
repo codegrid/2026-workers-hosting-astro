@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// このページはSSG（ビルド時に404.htmlとして出力される）
+// wrangler.jsoncで not_found_handling: "404-page" を指定すると、
+// どのアセットにも一致しなかったリクエストに、このページが静的に返される
+---
+
+<Layout>
+	<main>
+		<h1>ページが見つかりません</h1>
+		<p>
+			お探しのページは存在しません。このページはビルド時に404.htmlとして生成された静的なページです。
+		</p>
+		<a href="/">トップページへ戻る</a>
+	</main>
+</Layout>
+
+<style>
+	main {
+		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+		max-width: 40em;
+		margin: 0 auto;
+		padding: 16px;
+		line-height: 1.7;
+	}
+</style>

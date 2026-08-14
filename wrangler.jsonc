@@ -9,5 +9,6 @@
 	"assets": {
 		"directory": "./dist", // 静的に配信するディレクトリ
 		"binding": "ASSETS", // レンダリング時にdist内のファイルを参照できるようにする
+		"not_found_handling": "404-page", // どのアセットにも一致しない場合はビルド済み404ページを返す
 	},
 }
